@@ -27,7 +27,7 @@ class OptionSpec extends Specification {
         when: "l'option est validée"
         def valid = option.validate()
 
-        then: "le resultat est cohérent"
+        then: "les vérifications de contraintes sont appliquées correctement"
         valid == etatAttendu
 
         where:
