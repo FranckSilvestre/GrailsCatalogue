@@ -1,4 +1,12 @@
 language: groovy
 jdk:
-  - oraclejdk7
-script: "./grailsw refresh-dependencies && ./grailsw test-app unit:"
+- oraclejdk7
+script: './grailsw refresh-dependencies && ./grailsw test-app unit:'
+deploy:
+  provider: heroku
+  api_key:
+    secure: L04a4svTtcJCWoIyQgn7PumQ8bCHUWRM+r1RmZqJ2ds0WfO5Q7GwfQPhQmCGfCXnLRRaIUU5I0DjylXRJEoVzrzcj6sAZmhfkyAOgtRi4TkxcxvaAmRKcc1iG9RDkjHQHfE2TPavxtli3W/VZSBSay44fPeb/7aZVYkVRb2T1eQ=
+  app: young-harbor-7899
+  on:
+    repo: FranckSilvestre/GrailsCatalogue
+    branch: fsil/04_Heroku
