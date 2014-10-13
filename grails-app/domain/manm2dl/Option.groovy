@@ -6,6 +6,10 @@ class Option {
     Float price
     String description
 
+    Produit produit
+
+    static belongsTo = [produit:Produit]
+
     static constraints = {
         name blank: false, unique: true
         price nullable: false, min: 0f
