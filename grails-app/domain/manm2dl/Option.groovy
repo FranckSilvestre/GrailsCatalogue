@@ -8,7 +8,7 @@ class Option {
 
     static constraints = {
         name blank: false, unique: true
-        price nullable: false
+        price nullable: false, min: 0f
         description nullable: true
     }
 }

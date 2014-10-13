@@ -2,6 +2,7 @@ package manm2dl
 
 import grails.test.mixin.TestFor
 import spock.lang.Specification
+import spock.lang.Unroll
 
 /**
  * See the API for {@link grails.test.mixin.domain.DomainClassUnitTestMixin} for usage instructions
@@ -18,25 +19,49 @@ class OptionSpec extends Specification {
     def cleanup() {
     }
 
-    void "test sur les contraintes d'une option valide"() {
-        given: "une option"
+    @Unroll
+    void "test des contraintes sur option valide (nom : #aName)"() {
+
+        given: "une option valide"
         option.name = aName
-        option.price = aPrice
         option.description = aDescription
+        option.price = aPrice
 
-        when: "l'option est validée"
-        def valid = option.validate()
+        when: "on déclenche la validation de l'option"
+        def res = option.validate()
 
-        then: "les vérifications de contraintes sont appliquées correctement"
-        valid == etatAttendu
+        then: "l'option n'a pas d'erreur de validation"
+        res == true
+        !option.hasErrors()
 
         where:
-        aName  | aPrice | aDescription | etatAttendu
-        ""     | 12     | "une desc"   | false
-        null   | 12     | "une desc"   | false
-        "good" | 12.5   | null         | true
-        "opt"  | null   | "a desc"     | false
+        aName  | aDescription       | aPrice
+        "toto" | null               | 0.5
+        "titi" | ""                 | 12
+        "tutu" | "un desc non vide" | 3.8
 
+    }
 
+    @Unroll
+    void "test des contraintes sur option non valide (nom : #aDescription)"() {
+
+        given: "une option non valide"
+        option.name = aName
+        option.description = aDescription
+        option.price = aPrice
+
+        when: "on déclenche la validation de l'option"
+        def res = option.validate()
+
+        then: "l'option a des erreurs de validation"
+        res == false
+        option.hasErrors()
+
+        where:
+        aName  | aDescription | aPrice
+        null   | "opt 1"      | 0.5
+        ""     | "opt 2"      | 12
+        "tutu" | "opt 3"      | null
+        "tutu" | "opt 4"      | -3
     }
 }
