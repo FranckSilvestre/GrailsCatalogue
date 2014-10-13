@@ -1,6 +1,7 @@
 package manm2dl
 
 import grails.test.mixin.TestFor
+import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -11,9 +12,11 @@ import spock.lang.Unroll
 class OptionSpec extends Specification {
 
     Option option
+    @Shared Produit produit
 
     def setup() {
         option = new Option()
+        produit = Mock(Produit)
     }
 
     def cleanup() {
@@ -26,6 +29,7 @@ class OptionSpec extends Specification {
         option.name = aName
         option.description = aDescription
         option.price = aPrice
+        option.produit = produit
 
         when: "on déclenche la validation de l'option"
         def res = option.validate()
@@ -49,6 +53,7 @@ class OptionSpec extends Specification {
         option.name = aName
         option.description = aDescription
         option.price = aPrice
+        option.produit = aProduit
 
         when: "on déclenche la validation de l'option"
         def res = option.validate()
@@ -58,10 +63,11 @@ class OptionSpec extends Specification {
         option.hasErrors()
 
         where:
-        aName  | aDescription | aPrice
-        null   | "opt 1"      | 0.5
-        ""     | "opt 2"      | 12
-        "tutu" | "opt 3"      | null
-        "tutu" | "opt 4"      | -3
+        aName  | aDescription | aPrice | aProduit
+        null   | "opt 1"      | 0.5    | produit
+        ""     | "opt 2"      | 12     | produit
+        "tutu" | "opt 3"      | null   | produit
+        "tutu" | "opt 4"      | -3     | produit
+        "tutu" | "opt 5"      | 12.2   | null
     }
 }
