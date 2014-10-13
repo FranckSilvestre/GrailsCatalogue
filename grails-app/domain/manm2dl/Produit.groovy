@@ -9,9 +9,9 @@ class Produit {
     static hasMany = [options: Option]
 
     static constraints = {
-        description nullable: true
         name blank: false
         price min: 0f
+        description nullable: true
     }
 
     /**
@@ -24,6 +24,10 @@ class Produit {
             res += it.price
         }
         res
+    }
+
+    String toString() {
+        "$name ($price)"
     }
 
 }

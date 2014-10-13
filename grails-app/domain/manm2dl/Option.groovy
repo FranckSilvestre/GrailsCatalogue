@@ -15,4 +15,8 @@ class Option {
         price nullable: false, min: 0f
         description nullable: true
     }
+
+    String toString() {
+        "$name ($price)"
+    }
 }
