@@ -4,6 +4,7 @@ class Commande {
 
     Magasin magasin
     Personne client
+    Date dateCreated
 
     static constraints = {
     }
