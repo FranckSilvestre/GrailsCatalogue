@@ -43,6 +43,7 @@ class CommandeServiceSpec extends Specification {
         commandeService.createNewCommandeForClientInMagasin(client, null)
 
         then:"une exception est levée"
+        thrown(Exception)
     }
 
     void "l'ajout d'un produit à une commande réduit le stock du magasin"() {
