@@ -1,18 +1,25 @@
 package manm2dl
 
+import grails.test.mixin.Mock
 import grails.test.mixin.TestFor
+import grails.validation.ValidationException
+import org.springframework.transaction.PlatformTransactionManager
+import org.springframework.transaction.TransactionStatus
 import spock.lang.Specification
 
 /**
  * See the API for {@link grails.test.mixin.services.ServiceUnitTestMixin} for usage instructions
  */
 @TestFor(CommandeService)
+@Mock(Commande)
 class CommandeServiceSpec extends Specification {
 
     CommandeService commandeService
 
     def setup() {
         commandeService = new CommandeService()
+        // Workaround for GRAILS-10538
+        commandeService.transactionManager = Mock(PlatformTransactionManager) { getTransaction(_) >> Mock(TransactionStatus) }
     }
 
     void "la creation d'une commande valide crée une commande ayant un id et horodatée "() {
@@ -37,26 +44,29 @@ class CommandeServiceSpec extends Specification {
         commandeService.createNewCommandeForClientInMagasin(null, magasin)
 
         then:"une exception est lancée"
-        thrown(Exception)
+        thrown(ValidationException)
 
         when: "une commande est crée sans magasin"
         commandeService.createNewCommandeForClientInMagasin(client, null)
 
         then:"une exception est levée"
+        thrown(ValidationException)
     }
 
     void "l'ajout d'un produit à une commande réduit le stock du magasin"() {
 
         given: "une commande"
         def magasin = Mock(Magasin)
-        def commande = Mock(Commande)
+        def commande = Mock(Commande) {
+            getMagasin() >> magasin
+        }
         def produit = Mock(Produit)
 
         when:"on ajoute n exemplaires d'un produit"
         commandeService.addProduitToCommande(produit, commande, 2)
 
         then:"on sort 2 exemplaires du produit dans le magasin"
-        1 * magasin.sortProduit(produit,2)
+        1 * magasin.takeProduit(produit,2)
 
         and:"la commande récupère 2 exemplaires du produit"
         1 * commande.addProduit(produit,2)

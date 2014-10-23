@@ -11,7 +11,10 @@ class CommandeService {
      * @return la commande créée
      */
     Commande createNewCommandeForClientInMagasin(Personne client,Magasin magasin) {
-
+        Commande commande = new Commande(client: client, magasin: magasin)
+        commande.dateCreated = new Date()
+        commande.save(failOnError: true)
+        commande
     }
 
     /**
@@ -21,7 +24,8 @@ class CommandeService {
      * @return la commande modifiée
      */
     Commande addProduitToCommande(Produit produit, Commande commande, Integer nbProduits = 1) {
-
+        commande.magasin.takeProduit(produit,nbProduits)
+        commande.addProduit(produit,nbProduits)
     }
 
 }

@@ -8,4 +8,6 @@ class Commande {
 
     static constraints = {
     }
+
+    def addProduit(Produit produit, int nbProduits) {}
 }

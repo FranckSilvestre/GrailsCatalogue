@@ -9,4 +9,6 @@ class Magasin {
         name blank: false
         address blank: false
     }
+
+    Magasin takeProduit(Produit produit, int nbProduits) {}
 }
