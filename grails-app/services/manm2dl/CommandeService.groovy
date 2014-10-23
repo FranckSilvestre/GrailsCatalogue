@@ -13,7 +13,7 @@ class CommandeService {
     Commande createNewCommandeForClientInMagasin(Personne client,Magasin magasin) {
         Commande commande = new Commande(client: client, magasin: magasin)
         commande.dateCreated = new Date()
-        commande.save(failOnError: true)
+        commande.save()
         commande
     }
 

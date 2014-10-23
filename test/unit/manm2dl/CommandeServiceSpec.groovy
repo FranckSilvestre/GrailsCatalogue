@@ -41,16 +41,16 @@ class CommandeServiceSpec extends Specification {
         Magasin magasin = Mock(Magasin)
 
         when:"une commande est créée sans client"
-        commandeService.createNewCommandeForClientInMagasin(null, magasin)
+        def commande = commandeService.createNewCommandeForClientInMagasin(null, magasin)
 
         then:"une exception est lancée"
-        thrown(ValidationException)
+        commande.hasErrors()
 
         when: "une commande est crée sans magasin"
-        commandeService.createNewCommandeForClientInMagasin(client, null)
+        commande = commandeService.createNewCommandeForClientInMagasin(client, null)
 
         then:"une exception est levée"
-        thrown(ValidationException)
+        commande.hasErrors()
     }
 
     void "l'ajout d'un produit à une commande réduit le stock du magasin"() {
