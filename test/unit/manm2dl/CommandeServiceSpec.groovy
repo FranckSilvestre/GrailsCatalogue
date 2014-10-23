@@ -56,7 +56,7 @@ class CommandeServiceSpec extends Specification {
         commandeService.addProduitToCommande(produit, commande, 2)
 
         then:"on sort 2 exemplaires du produit dans le magasin"
-        1 * magasin.sortProduit(produit,2)
+        1 * magasin.takeProduit(produit,2)
 
         and:"la commande récupère 2 exemplaires du produit"
         1 * commande.addProduit(produit,2)
